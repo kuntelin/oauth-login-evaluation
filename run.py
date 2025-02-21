@@ -7,7 +7,8 @@ import os
 import uvicorn
 from fastapi import FastAPI
 
-from oauth_login_evaluation.auth.keycloak.routes import router as keycloak_router
+from oauth_login_evaluation.auth.keycloak.routers import router as keycloak_router
+from oauth_login_evaluation.auth.line.routers import router as line_router
 
 APP_NAME = "oauth_login_evaluation"
 
@@ -97,6 +98,7 @@ async def root():
 
 # * include routers
 app.include_router(keycloak_router, prefix="/auth/keycloak", tags=["keycloak"])
+app.include_router(line_router, prefix="/auth/line", tags=["line"])
 
 
 # * run FastAPI app

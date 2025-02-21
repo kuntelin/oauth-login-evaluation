@@ -4,9 +4,7 @@ from keycloak import KeycloakOpenID
 
 from oauth_login_evaluation.auth import AuthInterface
 
-__all__ = [
-    "KeycloakAuthController",
-]
+__all__ = ["KeycloakAuthController"]
 
 
 class KeycloakAuthController(AuthInterface):

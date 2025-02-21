@@ -1,5 +1,8 @@
 from fastapi import APIRouter
-from fastapi.responses import JSONResponse, PlainTextResponse
+from fastapi.responses import (
+    JSONResponse,
+    PlainTextResponse,
+)
 
 from oauth_login_evaluation import settings
 from oauth_login_evaluation.auth.keycloak.utils import get_keycloak_auth_controller
