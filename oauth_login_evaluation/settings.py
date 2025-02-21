@@ -1,0 +1,9 @@
+import os
+
+KEYCLOAK_SERVER_URL = os.getenv("KEYCLOAK_SERVER_URL", None)
+KEYCLOAK_REALM = os.getenv("KEYCLOAK_REALM", None)
+KEYCLOAK_CLIENT_ID = os.getenv("KEYCLOAK_CLIENT_ID", None)
+KEYCLOAK_CLIENT_SECRET = os.getenv("KEYCLOAK_CLIENT_SECRET", None)
+KEYCLOAK_REDIRECT_URI = os.getenv("KEYCLOAK_REDIRECT_URI", None)
+
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./locate.db")

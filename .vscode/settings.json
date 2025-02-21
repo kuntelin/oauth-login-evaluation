@@ -1,0 +1,12 @@
+{
+    "cSpell.words": ["fastapi", "levelname", "levelprefix", "userinfo", "uvicorn"],
+    "[python]": {
+        "editor.formatOnSave": true,
+        "editor.formatOnSaveMode": "file",
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        }
+    },
+    "python.envFile": "${workspaceFolder}/.env"
+}

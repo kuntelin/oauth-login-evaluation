@@ -1,0 +1,21 @@
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.1.0
+    environment:
+      - TZ=Asia/Taipei
+      - KC_HEALTH_ENABLED=true
+      - KC_METRICS_ENABLED=true
+      - KC_HOSTNAME=localhost
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+      # - KC_HTTPS_CERTIFICATE_KEY_FILE=/certs/privkey.pem
+      # - KC_HTTPS_CERTIFICATE_FILE=/certs/fullchain.pem
+      # - KC_HTTPS_PORT=8443
+    ports:
+      - 8080:8080
+      - 8443:8443
+    command:
+      start-dev
+      # start
+    volumes:
+      - ./certs:/certs
