@@ -7,9 +7,10 @@ from fastapi.responses import (
     PlainTextResponse,
 )
 
-from oauth_login_evaluation import settings
 from oauth_login_evaluation.auth.keycloak.utils import get_keycloak_auth_controller
+from oauth_login_evaluation.core import settings
 from oauth_login_evaluation.user.manager import add_token, get_user_by_social_account
+from oauth_login_evaluation.user.models import UserOut
 
 logger = logging.getLogger(__name__)
 
@@ -50,5 +51,6 @@ def callback(code: str):
     add_token(user_id=local_user.id, token=token["access_token"], provider="keycloak", expires_in=token["expires_in"])
 
     return JSONResponse(
-        status_code=HTTPStatus.OK, content={"token": token, "social_user": social_user, "local_user": local_user.dict()}
+        status_code=HTTPStatus.OK,
+        content={"token": token, "social_user": social_user, "local_user": UserOut(**local_user.dict()).dict()},
     )

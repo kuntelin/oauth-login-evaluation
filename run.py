@@ -2,7 +2,6 @@
 
 import logging
 import logging.config
-import os
 
 import uvicorn
 from fastapi import FastAPI
@@ -10,13 +9,13 @@ from fastapi import FastAPI
 from oauth_login_evaluation.auth.keycloak.routers import router as keycloak_router
 from oauth_login_evaluation.auth.line.routers import router as line_router
 from oauth_login_evaluation.auth.local.routers import router as local_router
+from oauth_login_evaluation.core import settings
 from oauth_login_evaluation.user.routers import router as user_router
 
 APP_NAME = "oauth_login_evaluation"
-
-VERBOSE = os.getenv("VERBOSE", "false").lower() == "true"
-DEBUG = os.getenv("DEBUG", "false").lower() == "true"
-TRACING = os.getenv("TRACING", "false").lower() == "true"
+VERBOSE = settings.VERBOSE
+DEBUG = settings.DEBUG
+TRACING = settings.TRACING
 
 # * initialize logging
 
@@ -99,10 +98,10 @@ async def root():
 
 
 # * include routers
-app.include_router(user_router, prefix="/user", tags=["user"])
 app.include_router(local_router, prefix="/auth/local", tags=["auth"])
 app.include_router(keycloak_router, prefix="/auth/keycloak", tags=["auth"])
 app.include_router(line_router, prefix="/auth/line", tags=["auth"])
+app.include_router(user_router, prefix="/user", tags=["user"])
 
 
 # * run FastAPI app

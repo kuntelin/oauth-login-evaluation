@@ -7,9 +7,10 @@ from fastapi.responses import (
     PlainTextResponse,
 )
 
-from oauth_login_evaluation import settings
 from oauth_login_evaluation.auth.line.utils import get_line_auth_controller
+from oauth_login_evaluation.core import settings
 from oauth_login_evaluation.user.manager import add_token, get_user_by_social_account
+from oauth_login_evaluation.user.models import UserOut
 
 logger = logging.getLogger(__name__)
 
@@ -48,5 +49,5 @@ def callback(code: str):
     # * return social token, social user info, local user info
     return JSONResponse(
         status_code=HTTPStatus.OK,
-        content={"token": token, "social_user": social_user, "local_user": local_user.dict()},
+        content={"token": token, "social_user": social_user, "local_user": UserOut(**local_user.dict()).dict()},
     )
