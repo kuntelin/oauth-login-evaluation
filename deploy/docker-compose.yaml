@@ -1,4 +1,14 @@
 services:
+  database:
+    image: postgres:14.1
+    environment:
+      - POSTGRES_DB=oauth-login-evaluation
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
   keycloak:
     image: quay.io/keycloak/keycloak:26.1.0
     environment:
@@ -19,3 +29,6 @@ services:
       # start
     volumes:
       - ./certs:/certs
+volumes:
+  db-data:
+    driver: local
