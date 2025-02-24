@@ -30,6 +30,7 @@ class LineAuthController(AuthInterface):
             "redirect_uri": self._redirect_uri,
             "scope": self._scope,
             "state": self._generate_state(),
+            "user_id": "bc5af780c6fb473790ac1c0e764d6165",
         }
         uri = "&".join([f"{k}={v}" for k, v in params.items()])
 

@@ -17,13 +17,14 @@ from fastapi.responses import (
 from fastapi.security import OAuth2PasswordRequestForm
 
 from oauth_login_evaluation import settings
-from oauth_login_evaluation.auth.line.utils import get_line_auth_controller
+from oauth_login_evaluation.user.manager import (
+    add_token,
+    get_user_by_name,
+)
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
-
-auth_controller = get_line_auth_controller(settings)
 
 
 def create_access_token(data: dict):
@@ -43,12 +44,17 @@ def create_access_token(data: dict):
 @router.post("/login")
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     if form_data.username == "admin" and form_data.password == "admin":
-        expires_in = (datetime.now(timezone.utc) + timedelta(minutes=settings.JWT_EXPIRATION)).second
+        expires_in = (datetime.now(timezone.utc) + timedelta(minutes=settings.JWT_EXPIRATION)).timestamp()
+        access_token = create_access_token({"username": form_data.username, "expires_in": expires_in})
+
+        user = get_user_by_name(form_data.username)
+        add_token(user_id=user.id, token=access_token, provider="local", expires_in=expires_in)
+
         return JSONResponse(
             content={
                 "token_type": "bearer",
                 "expires_in": expires_in,
-                "access_token": create_access_token({"username": form_data.username}),
+                "access_token": access_token,
             },
             status_code=200,
         )

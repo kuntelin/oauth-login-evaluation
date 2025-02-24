@@ -17,4 +17,4 @@ LINE_LOGIN_CHANNEL_ID = os.getenv("LINE_LOGIN_CHANNEL_ID", "")
 LINE_LOGIN_CHANNEL_SECRET = os.getenv("LINE_LOGIN_CHANNEL_SECRET", "")
 LINE_LOGIN_REDIRECT_URI = os.getenv("LINE_LOGIN_REDIRECT_URI", "")
 
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./locate.db")
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./oauth_login_evaluation.db")

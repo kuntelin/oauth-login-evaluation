@@ -1,4 +1,5 @@
 import logging
+from http import HTTPStatus
 
 from fastapi import APIRouter
 from fastapi.responses import (
@@ -8,6 +9,7 @@ from fastapi.responses import (
 
 from oauth_login_evaluation import settings
 from oauth_login_evaluation.auth.line.utils import get_line_auth_controller
+from oauth_login_evaluation.user.manager import add_token, get_user_by_social_account
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +28,25 @@ def callback(code: str):
     logger.info(f"code: {code}")
 
     token = auth_controller.get_token(code)
-    user_info = auth_controller.get_user_info(token["access_token"])
 
-    return JSONResponse(content={"token": token, "user_info": user_info})
+    # * get social user info
+    social_user = auth_controller.get_user_info(token["access_token"])
+    logger.debug(f"social_user: {social_user}")
+
+    # * get local user by social account
+    local_user = get_user_by_social_account(provider="line", account_key=social_user["userId"])
+    logger.debug(f"local_user: {local_user}")
+
+    # * local user not found
+    # FIXME: should redirect to signup page if local user not found
+    if not local_user:
+        return JSONResponse(status_code=HTTPStatus.OK, content={"token": token, "social_user": social_user})
+
+    # * local user found, add token to db
+    add_token(user_id=local_user.id, token=token["access_token"], provider="line", expires_in=token["expires_in"])
+
+    # * return social token, social user info, local user info
+    return JSONResponse(
+        status_code=HTTPStatus.OK,
+        content={"token": token, "social_user": social_user, "local_user": local_user.dict()},
+    )
